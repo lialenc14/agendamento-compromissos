@@ -1,0 +1,73 @@
+body {
+    background-color: #CAE8D5;
+}
+
+.container {
+    background-color: #84A9AC;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h2 {
+    color: #204051;
+}
+
+label {
+    color: #3B6978;
+}
+
+input[type="text"],
+input[type="datetime-local"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #3B6978;
+    border-radius: 5px;
+}
+
+.btn-danger {
+    background-color: #FF5733;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #204051;
+    color: white;
+}
+
+#btnEvento {
+    background-color: #3B6978;
+    color: white;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.lupa-buscar {
+    color: #3B6978;
+}
+
+#pesquisaEvento {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #3B6978;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+th {
+    background-color: #3B6978;
+    color: white;
+}
+
+td {
+    background-color: #84A9AC;
+    color: #204051;
+}
