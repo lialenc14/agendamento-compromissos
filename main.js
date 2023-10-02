@@ -94,7 +94,7 @@ form.addEventListener("submit", function (e) {
     const nomeEvento = newRow.insertCell(1);
     const acoesEvento = newRow.insertCell(2);
 
-    dataEvento.innerText = data;
+    dataEvento.innerText = datatime;
     nomeEvento.innerText = nome;
 
     const deletarBtn = document.createElement("button");
