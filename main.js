@@ -32,6 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // Se um evento está sendo editado, atualize-o em vez de criar um novo
             eventoEditando.cells[0].innerText = data;
             eventoEditando.cells[1].innerText = nome;
+            eventoEditando.cells[2].innerText = descrição;
+            eventoEditando.cells[3].innerText = local;
             limparFormulario();
             form.style.display = "none";
             novoEventoBtn.style.display = "block";
@@ -69,6 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Preencha o formulário com os valores atuais do evento para edição
                 dataInput.value = dataEvento.innerText;
                 nomeInput.value = nomeEvento.innerText;
+                descricaoInput.value = descreverEvento.innerText;
+                localInput.value = localEvento.innerText;
                 eventoEditando = newRow; // Defina o evento que está sendo editado
                 form.style.display = "block";
                 novoEventoBtn.style.display = "none";
