@@ -117,3 +117,27 @@ document.addEventListener("DOMContentLoaded", function () {
         localInput.value = "";
     }
 });
+
+
+        /*local storage,não funcionou usando o id da tabela e o campo nomeEvento
+        // Verifique se o navegador suporta o localStorage
+    if (typeof(Storage) !== "undefined") {
+        // Recuperar dados do localStorage quando a página é carregada
+        var dadosSalvos = localStorage.getItem("meusDados");
+    
+        // Verificar se há dados salvos
+        if (dadosSalvos) {
+        // Se houver dados salvos, preencha os campos com esses dados
+        document.getElementById("campo1").value = dadosSalvos;
+        }
+    
+        // Adicione um evento para salvar os dados quando o campo for alterado
+        document.getElementById("campo1").addEventListener("change", function() {
+        var valorCampo = this.value;
+        // Salvar os dados no localStorage
+        localStorage.setItem("meusDados", valorCampo);
+        });
+    } else {
+        console.log("Desculpe, o navegador não suporta o armazenamento local.");
+    }
+    */
