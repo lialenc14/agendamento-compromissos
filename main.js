@@ -23,8 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const nome = nomeInput.value;
-        const descricao = descricaoInput.value;
         const data = dataInput.value;
+        const descricao = descricaoInput.value;
         const local = localInput.value;
 
 
@@ -48,11 +48,15 @@ document.addEventListener("DOMContentLoaded", function () {
             const newRow = listaEventos.insertRow();
             const dataEvento = newRow.insertCell(0);
             const nomeEvento = newRow.insertCell(1);
-            const acoesEvento = newRow.insertCell(2);
+            const descreverEvento = newRow.insertCell(2);
+            const localEvento = newRow.insertCell(3);
+            const acoesEvento = newRow.insertCell(4);
 
 
             dataEvento.innerText = data;
             nomeEvento.innerText = nome;
+            descreverEvento.innerText = descricao;
+            localEvento.innerText = local;
 
 
             const deletarBtn = document.createElement("button");
@@ -108,8 +112,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function limparFormulario() {
         nomeInput.value = "";
-        descricaoInput.value = "";
         dataInput.value = "";
+        descricaoInput.value = "";
         localInput.value = "";
     }
 });
