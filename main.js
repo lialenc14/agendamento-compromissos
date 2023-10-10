@@ -6,86 +6,108 @@ document.addEventListener("DOMContentLoaded", function () {
     const dataInput = document.getElementById("dataEvento");
     const localInput = document.getElementById("localEvento");
     const listaEventos = document.querySelector("tbody");
-    let eventoEditando = null; // Variável para rastrear o evento que está sendo editado
+    let eventoEditando = null;
     const pesquisaInput = document.getElementById("pesquisaEvento");
-    const nenhumEventoRow = document.getElementById("nenhumEventoRow"); // Adicionado
+    const nenhumEventoRow = document.getElementById("nenhumEventoRow");
 
+    function carregarEventosDoLocalStorage() {
+        const eventosSalvos = JSON.parse(localStorage.getItem("eventos")) || [];
+        eventosSalvos.forEach(evento => adicionarEventoNaTabela(evento));
 
-    novoEventoBtn.addEventListener("click", function () {
+        if (eventosSalvos.length > 0) {
+            nenhumEventoRow.style.display = "none";
+        }
+    }
+
+    function salvarEventoNoLocalStorage(evento) {
+        const eventosSalvos = JSON.parse(localStorage.getItem("eventos")) || [];
+        eventosSalvos.push(evento);
+        localStorage.setItem("eventos", JSON.stringify(eventosSalvos));
+    }
+
+    function removerEventoDoLocalStorage(evento) {
+        const eventosSalvos = JSON.parse(localStorage.getItem("eventos")) || [];
+        const eventosFiltrados = eventosSalvos.filter(e =>
+            e.data !== evento.data || e.nome !== evento.nome
+        );
+        localStorage.setItem("eventos", JSON.stringify(eventosFiltrados));
+    }
+
+    function adicionarEventoNaTabela(evento) {
+        const newRow = listaEventos.insertRow();
+        const dataEvento = newRow.insertCell(0);
+        const nomeEvento = newRow.insertCell(1);
+        const descreverEvento = newRow.insertCell(2);
+        const localEvento = newRow.insertCell(3);
+        const acoesEvento = newRow.insertCell(4);
+
+        dataEvento.innerText = evento.data;
+        nomeEvento.innerText = evento.nome;
+        descreverEvento.innerText = evento.descricao;
+        localEvento.innerText = evento.local;
+
+        const deletarBtn = criarBotao("Deletar", () => {
+            newRow.remove();
+            removerEventoDoLocalStorage(evento);
+            if (listaEventos.rows.length === 1) {
+                nenhumEventoRow.style.display = "";
+            }
+        });
+
+        const editarBtn = criarBotao("Editar", () => {
+            dataInput.value = evento.data;
+            nomeInput.value = evento.nome;
+            descricaoInput.value = evento.descricao;
+            localInput.value = evento.local;
+            eventoEditando = newRow;
+            form.style.display = "block";
+            novoEventoBtn.style.display = "none";
+        });
+
+        acoesEvento.appendChild(deletarBtn);
+        acoesEvento.appendChild(editarBtn);
+
+        if (listaEventos.rows.length > 1) {
+            nenhumEventoRow.style.display = "none";
+        }
+    }
+
+    function criarBotao(texto, onClickCallback) {
+        const botao = document.createElement("button");
+        botao.innerText = texto;
+        botao.addEventListener("click", onClickCallback);
+        return botao;
+    }
+
+    carregarEventosDoLocalStorage();
+
+    novoEventoBtn.addEventListener("click", () => {
         limparFormulario();
         form.style.display = "block";
         novoEventoBtn.style.display = "none";
     });
 
-
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", (e) => {
         e.preventDefault();
-
 
         const nome = nomeInput.value;
         const data = dataInput.value;
         const descricao = descricaoInput.value;
         const local = localInput.value;
 
-
         if (eventoEditando) {
-            // Se um evento está sendo editado, atualize-o em vez de criar um novo
             eventoEditando.cells[0].innerText = data;
             eventoEditando.cells[1].innerText = nome;
-            eventoEditando.cells[2].innerText = descrição;
+            eventoEditando.cells[2].innerText = descricao;
             eventoEditando.cells[3].innerText = local;
             limparFormulario();
             form.style.display = "none";
             novoEventoBtn.style.display = "block";
-            eventoEditando = null; // Limpe a variável de evento editando
+            eventoEditando = null;
         } else {
-            if (listaEventos.rows.length === 1) {
-                nenhumEventoRow.style.display = "none"; // Ocultar a mensagem "Nenhum evento" quando a primeira tarefa for adicionada
-            }
-
-
-            // Crie um novo evento
-            const newRow = listaEventos.insertRow();
-            const dataEvento = newRow.insertCell(0);
-            const nomeEvento = newRow.insertCell(1);
-            const descreverEvento = newRow.insertCell(2);
-            const localEvento = newRow.insertCell(3);
-            const acoesEvento = newRow.insertCell(4);
-
-
-            dataEvento.innerText = data;
-            nomeEvento.innerText = nome;
-            descreverEvento.innerText = descricao;
-            localEvento.innerText = local;
-
-
-            const deletarBtn = document.createElement("button");
-            deletarBtn.innerText = "Deletar";
-            deletarBtn.addEventListener("click", function () {
-                newRow.remove();
-                if (listaEventos.rows.length === 1) {
-                    nenhumEventoRow.style.display = ""; // Mostrar a mensagem "Nenhum evento" quando a última tarefa for removida
-                }
-            });
-
-
-            const editarBtn = document.createElement("button");
-            editarBtn.innerText = "Editar";
-            editarBtn.addEventListener("click", function () {
-                // Preencha o formulário com os valores atuais do evento para edição
-                dataInput.value = dataEvento.innerText;
-                nomeInput.value = nomeEvento.innerText;
-                descricaoInput.value = descreverEvento.innerText;
-                localInput.value = localEvento.innerText;
-                eventoEditando = newRow; // Defina o evento que está sendo editado
-                form.style.display = "block";
-                novoEventoBtn.style.display = "none";
-            });
-
-
-            acoesEvento.appendChild(deletarBtn);
-            acoesEvento.appendChild(editarBtn);
-
+            const evento = { data, nome, descricao, local };
+            adicionarEventoNaTabela(evento);
+            salvarEventoNoLocalStorage(evento);
 
             limparFormulario();
             form.style.display = "none";
@@ -93,11 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-
-    pesquisaInput.addEventListener("input", function () {
+    pesquisaInput.addEventListener("input", () => {
         const termoPesquisa = pesquisaInput.value.toLowerCase();
         const linhas = listaEventos.getElementsByTagName("tr");
-
 
         for (let i = 1; i < linhas.length; i++) {
             const nomeEvento = linhas[i].getElementsByTagName("td")[1].innerText.toLowerCase();
@@ -109,7 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-
     function limparFormulario() {
         nomeInput.value = "";
         dataInput.value = "";
@@ -117,27 +136,3 @@ document.addEventListener("DOMContentLoaded", function () {
         localInput.value = "";
     }
 });
-
-
-        /*local storage,não funcionou usando o id da tabela e o campo nomeEvento
-        // Verifique se o navegador suporta o localStorage
-    if (typeof(Storage) !== "undefined") {
-        // Recuperar dados do localStorage quando a página é carregada
-        var dadosSalvos = localStorage.getItem("meusDados");
-    
-        // Verificar se há dados salvos
-        if (dadosSalvos) {
-        // Se houver dados salvos, preencha os campos com esses dados
-        document.getElementById("campo1").value = dadosSalvos;
-        }
-    
-        // Adicione um evento para salvar os dados quando o campo for alterado
-        document.getElementById("campo1").addEventListener("change", function() {
-        var valorCampo = this.value;
-        // Salvar os dados no localStorage
-        localStorage.setItem("meusDados", valorCampo);
-        });
-    } else {
-        console.log("Desculpe, o navegador não suporta o armazenamento local.");
-    }
-    */
